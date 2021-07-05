@@ -1,9 +1,9 @@
 build_agents = ["AMD-hipanl-nvidia-01","AMD-hipanl-vg20-01"]
 buildmap =[:]
 
-buildhip(agent){
+buildhip(slave){
    return{
-      node(agent) {
+      node(slave) {
         stage("Source sync"){
            echo "sourec sync"
         }
@@ -24,8 +24,8 @@ buildhip(agent){
 }
 
 node('BS5') { 
-   for (agent in build_agents) {
-      buildmap[agent] = buildhip(agent)
+   for (slave in build_agents) {
+      buildmap[slave] = buildhip(slave)
    }
 
    buildmap['failFast']=false
