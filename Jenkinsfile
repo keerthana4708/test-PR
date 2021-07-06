@@ -31,7 +31,7 @@ build_agents = ["AMD-hipanl-nvidia-01","AMD-hipanl-vg20-01"]
 buildmap =[:]
  
    for (slave in build_agents) {
-      def match = text =~ /nvidia/ 
+      def match = slave =~ /nvidia/ 
       assert m instanceof Matcher
       if(!match){
           buildmap[slave] = buildhip(slave)
