@@ -18,11 +18,12 @@ def buildhip(slave,backend){
              stage("rocm-dev installation"){
                 echo "dev instalation"
             }
-          else {
+         
+          }else {
              println "nvidia is found"
           }
       
-          }
+          
           stage("test") {
             echo "testing"
  
