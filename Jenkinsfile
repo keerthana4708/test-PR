@@ -3,7 +3,13 @@ def buildhip(slave){
      return{
         node(slave) {
           stage("Source sync"){
-            echo "sourec sync"
+            dir("${WORKSPACE}/hip"){
+               checkout scm
+               }
+            dir("${WORKSPACE}/hipamd") {
+              git branch: 'amd-master',
+              url: 'ssh://gerritgit/compute/ec/hipamd'
+            }
          }
           stage("build"){
              echo "Build"
