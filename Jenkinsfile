@@ -1,5 +1,5 @@
 
-def buildhip(slave,backend){
+def buildhip(slave){
      return{
         node(slave) {
           stage("Source sync"){
