@@ -38,7 +38,7 @@ for (agent in build_agents)  {
 
 }
 
-
+println "agents : $agents"
 for (slave in agents) {
         buildmap[slave] = buildhip(slave)
    }
