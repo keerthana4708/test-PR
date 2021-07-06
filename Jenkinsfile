@@ -40,10 +40,10 @@ build_agents = ["AMD-hipanl-nvidia-01","AMD-hipanl-vg20-01"]
 buildmap =[:]
 agents = []
 
-for (slave in build_agents) {
-    def match = slave =~ /nvidia/
+for (buildSlave  in build_agents) {
+    def match = buildSlave =~ /nvidia/
     if (match) {
-         agents.add(slave)
+         agents.add(buildSlave)
 }
 
 println "agents $agents"
