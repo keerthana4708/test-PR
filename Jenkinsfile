@@ -32,7 +32,7 @@ buildmap =[:]
  
    for (slave in build_agents) {
       def match = slave =~ /nvidia/ 
-      assert m instanceof Matcher
+      assert match instanceof Matcher
       if(!match){
           buildmap[slave] = buildhip(slave)
       }
