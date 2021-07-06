@@ -14,9 +14,14 @@ def buildhip(slave){
           stage("build"){
              echo "Build"
            }
-
+          def match = slave =~ /nvidia/
+          if(!data) {
+             stage("rocm-dev installation"){
+                echo "dev instalation"
+           } 
+          }
           stage("test") {
-            echo "testimg"
+            echo "testing"
  
         }
     }
@@ -25,24 +30,17 @@ def buildhip(slave){
 
 }
 
+timestamps {
 node('BS5') {
 build_agents = ["AMD-hipanl-nvidia-01","AMD-hipanl-vg20-01"]
-agents=[]
 buildmap =[:]
 
-for (agent in build_agents)  {
-    def match = agent =~ /nvidia/
-    if(!match){
-      agents.add(agent)
-    }
 
-}
-
-println "agents : $agents"
-for (slave in agents) {
+for (slave in build_agents) {
         buildmap[slave] = buildhip(slave)
    }
 
    buildmap['failFast']=false
    parallel  buildmap
+}
 }
