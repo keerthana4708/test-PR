@@ -14,7 +14,7 @@ def buildhip(slave){
           stage("build"){
              echo "Build"
            }
-          if(slave in agents) {
+          if(slave not in agents) {
              stage("rocm-dev installation"){
                 echo "dev instalation"
             }
@@ -42,7 +42,7 @@ agents = []
 
 for (buildSlave  in build_agents) {
     def match = buildSlave =~ /nvidia/
-    if (match) {
+    if (!match) {
          agents.add(buildSlave)
 }
 
