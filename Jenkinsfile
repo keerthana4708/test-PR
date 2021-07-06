@@ -28,15 +28,19 @@ def buildhip(slave){
 node('BS5') {
 build_agents = ["AMD-hipanl-nvidia-01","AMD-hipanl-vg20-01"]
 agents=[]
-
-
 buildmap =[:]
- 
-   for (slave in build_agents) {
-      def match = slave =~ /nvidia/ 
-      if(!match){
-          buildmap[slave] = buildhip(slave)
-      }
+
+for (agent in build_agents)  {
+    def match = agent =~ /nvidia/
+    if(!match){
+      agents.add(agent)
+    }
+
+}
+
+
+for (slave in agents) {
+        buildmap[slave] = buildhip(slave)
    }
 
    buildmap['failFast']=false
