@@ -1,4 +1,3 @@
-import java.util.regex.Matcher
 
 def buildhip(slave){
      return{
@@ -28,6 +27,9 @@ def buildhip(slave){
 
 node('BS5') {
 build_agents = ["AMD-hipanl-nvidia-01","AMD-hipanl-vg20-01"]
+agents=[]
+
+
 buildmap =[:]
  
    for (slave in build_agents) {
