@@ -14,7 +14,7 @@ def buildhip(slave){
           stage("build"){
              echo "Build"
            }
-          if(slave not in agents) {
+          if(!slave in agents) {
              stage("rocm-dev installation"){
                 echo "dev instalation"
             }
