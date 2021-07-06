@@ -1,3 +1,4 @@
+import java.util.regex.Matcher
 
 def buildhip(slave){
      return{
@@ -30,7 +31,11 @@ build_agents = ["AMD-hipanl-nvidia-01","AMD-hipanl-vg20-01"]
 buildmap =[:]
  
    for (slave in build_agents) {
-      buildmap[slave] = buildhip(slave)
+      def match = text =~ /nvidia/ 
+      assert m instanceof Matcher
+      if(!match){
+          buildmap[slave] = buildhip(slave)
+      }
    }
 
    buildmap['failFast']=false
