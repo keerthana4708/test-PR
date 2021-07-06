@@ -14,7 +14,7 @@ def buildhip(slave,backend){
           stage("build"){
              echo "Build"
            }
-          if(backend==0) {
+          if(slave in agents) {
              stage("rocm-dev installation"){
                 echo "dev instalation"
             }
@@ -38,14 +38,18 @@ timestamps {
 node('BS5') {
 build_agents = ["AMD-hipanl-nvidia-01","AMD-hipanl-vg20-01"]
 buildmap =[:]
-backend =0
+agents = []
 
 for (slave in build_agents) {
-        def match = slave =~ /nvidia/
-        if(match){
-            backend =1
-            buildmap[slave] = buildhip(slave,backend)
-        }
+    def match = slave =~ /nvidia/
+    if (match) {
+         agents.add(slave)
+}
+
+println "agents $agents"
+
+for (slave in build_agents) {
+        buildmap[slave] = buildhip(slave)
    }
 
    buildmap['failFast']=false
