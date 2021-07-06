@@ -54,5 +54,6 @@ for (slave in build_agents) {
 
    buildmap['failFast']=false
    parallel  buildmap
-}
+  }
+ }
 }
