@@ -15,7 +15,7 @@ def buildhip(slave){
              echo "Build"
            }
           def match = slave =~ /nvidia/
-          if(!data) {
+          if(!match) {
              stage("rocm-dev installation"){
                 echo "dev instalation"
            } 
