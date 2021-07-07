@@ -14,11 +14,13 @@ def buildhip(slave){
           stage("build"){
              echo "Build"
            }
-             
-         stage("rocm-dev installation"){
+         if ("${env.NODE_NAME}" in agents)  {   
+             stage("rocm-dev installation"){
                 echo "dev instalation"
             }
-         
+         }else {
+              println "Nvidia is found"
+          }   
           
           stage("test") {
             echo "testing"
