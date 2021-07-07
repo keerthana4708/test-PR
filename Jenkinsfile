@@ -7,12 +7,34 @@ def buildhip(slave){
                checkout scm
                }
             dir("${WORKSPACE}/hipamd") {
-              git branch: 'amd-master',
-              url: 'ssh://gerritgit/compute/ec/hipamd'
+              git branch: 'develop',
+              url: 'https://github.com/ROCm-Developer-Tools/hipamd'
             }
+            dir("${WORKSPACE}/ROCm-OpenCL-Runtime-internal") {
+               git branch:'develop'
+               url : 'https://github.com/RadeonOpenCompute/ROCm-OpenCL-Runtime-internal'
+
+            }
+            dir("${WORKSPACE}/ROCclr") {
+               git branch:'develop'
+               url : 'https://github.com/ROCm-Developer-Tools/ROCclr-internal'
+
+            }
+            dir("${WORKSPACE}/HIP-Common") {
+               git branch:'develop'
+               url : 'https://github.com/ROCm-Developer-Tools/HIP-Common'
+                
+            }
+
+
+
          }
           stage("build"){
-             echo "Build"
+             dir("${WORKSPACE}/ROCclr"){
+                OPENCL_DIR = sh(returnStdout:true,script:"readlink -f '${WORKSPACE}/ROCclr'").trim()
+                def build_rocclr=sh(script: """export $OPENCL_DIR;mkdir -p build; cd build; cmake -DAMD_OPENCL_PATH="$OPENCL_DIR" -DCMAKE_INSTALL_PREFIX=/opt/rocm/rocclr ..; make -j$(nproc)""", returnStdout: true).trim()
+
+             }
            }
             
          println "${env.NODE_NAME}"
@@ -23,7 +45,12 @@ def buildhip(slave){
          for (a in agents) {
           if ("${env.NODE_NAME}" == a)  {   
              stage("rocm-dev installation"){
-                echo "dev instalation"
+                def cmd = "sudo rm -rf /var/cache/apt/*"
+                    cmd += "sudo apt-get clean"
+                    cmd += "sudo sh -c 'echo deb [arch=amd64 trusted=yes] http://compute-artifactory.amd.com/artifactory/list/rocm-osdb-deb/ compute-rocm-rel-4.3 34 > /etc/apt/sources.list.d/rocm.list'"
+                    cmd += "sudo apt-get update"
+                    cmd += "sudo apt-get -y install rocm-dkms"
+                def install = sh(returnStdout:true,script:cmd).trim()
             }
          }else {
               println "Nvidia is found"
