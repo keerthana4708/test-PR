@@ -36,6 +36,16 @@ timestamps {
      buildmap =[:]
      agents = []
 
+
+     for (agent in build_agents)  {
+        def match = agent =~ /nvidia/
+        if(!match){
+             agents.add(agent)
+         }
+
+      }   
+     
+     println "agents = $agents"
      for (slave in build_agents) {
         buildmap[slave] = buildhip(slave)
      }
