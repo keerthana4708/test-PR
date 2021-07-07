@@ -16,6 +16,10 @@ def buildhip(slave){
            }
             
          println "${env.NODE_NAME}"
+       
+         def matches = "${env.NODE_NAME}" =~/nvidia/
+         println "matches =  $matches"
+
          if ("${env.NODE_NAME}" in agents)  {   
              stage("rocm-dev installation"){
                 echo "dev instalation"
