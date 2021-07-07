@@ -14,6 +14,8 @@ def buildhip(slave){
           stage("build"){
              echo "Build"
            }
+            
+         println "${env.NODE_NAME}"
          if ("${env.NODE_NAME}" in agents)  {   
              stage("rocm-dev installation"){
                 echo "dev instalation"
