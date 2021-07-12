@@ -45,24 +45,7 @@ def buildhip(slave){
            }
             
          println "${env.NODE_NAME}"
-       
-         //def matches = "${env.NODE_NAME}" =~/nvidia/
-         //println "matches =  $matches"
           
-         for (a in agents) {
-          if ("${env.NODE_NAME}" == a)  {   
-             stage("rocm-dev installation"){
-                def cmd = "sudo rm -rf /var/cache/apt/* ;"
-                    cmd += "sudo apt-get clean ;"
-                    cmd += "sudo sh -c 'echo deb [arch=amd64 trusted=yes] http://compute-artifactory.amd.com/artifactory/list/rocm-osdb-deb/ compute-rocm-rel-4.3 34 > /etc/apt/sources.list.d/rocm.list';"
-                    cmd += "sudo apt-get update;"
-                    cmd += "sudo apt-get -y install rocm-dkms;"
-                def install = sh(returnStdout:true,script:cmd).trim()
-            }
-         }else {
-              println "Nvidia is found"
-          }   
-         }
           stage("test") {
             echo "testing"
  
@@ -75,12 +58,12 @@ def buildhip(slave){
 
 timestamps {
      node('BS5') {
-     build_agents = ["AMD-hipanl-nvidia-01","AMD-hipanl-vg20-01"]
+     labels = ["nvidia-ext", "amd-ext"]
      buildmap =[:]
      agents = []
 
 
-     for (agent in build_agents)  {
+     for (agent in labels)  {
         def match = agent =~ /nvidia/
         if(!match){
              agents.add(agent)
@@ -89,7 +72,7 @@ timestamps {
       }   
      
      println "agents = $agents"
-     for (slave in build_agents) {
+     for (slave in labels) {
         buildmap[slave] = buildhip(slave)
      }
 
