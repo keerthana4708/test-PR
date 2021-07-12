@@ -31,8 +31,9 @@ def buildhip(slave){
          }
           stage("build"){
              dir("${WORKSPACE}/ROCclr"){
+                nproc = sh (script: "nproc",returnStdout: true).trim()
                 OPENCL_DIR = sh(returnStdout:true,script:"readlink -f '${WORKSPACE}/ROCclr'").trim()
-                def build_rocclr=sh(script: """export $OPENCL_DIR;mkdir -p build; cd build; cmake -DAMD_OPENCL_PATH="$OPENCL_DIR" -DCMAKE_INSTALL_PREFIX=/opt/rocm/rocclr ..; make -j$(nproc)""", returnStdout: true).trim()
+                def build_rocclr=sh(script: """export $OPENCL_DIR;mkdir -p build; cd build; cmake -DAMD_OPENCL_PATH="$OPENCL_DIR" -DCMAKE_INSTALL_PREFIX=/opt/rocm/rocclr ..; make -j${nproc}""", returnStdout: true).trim()
 
              }
            }
