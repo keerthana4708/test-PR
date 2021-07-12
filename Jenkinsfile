@@ -32,10 +32,16 @@ def buildhip(slave){
           stage("build"){
              dir("${WORKSPACE}/ROCclr"){
                 nproc = sh (script: "nproc",returnStdout: true).trim()
-                OPENCL_DIR = sh(returnStdout:true,script:"readlink -f '${WORKSPACE}/ROCclr'").trim()
-                def build_rocclr=sh(script: """export $OPENCL_DIR;mkdir -p build; cd build; cmake -DAMD_OPENCL_PATH="$OPENCL_DIR" -DCMAKE_INSTALL_PREFIX=/opt/rocm/rocclr ..; make -j${nproc}""", returnStdout: true).trim()
+                OPENCL_DIR = "${WORKSPACE}/ROCclr"
+                sh(script: """export $OPENCL_DIR;mkdir -p build; cd build; cmake -DAMD_OPENCL_PATH="$OPENCL_DIR" -DCMAKE_INSTALL_PREFIX=/opt/rocm/rocclr ..; make -j${nproc}""")
 
              }
+            dir("${WORKSPACE}/HIP-Common"){
+               HIP_DIR = "${WORKSPACE}/HIP-Common"
+               sh(script: """export ${HIP_DIR}; mkdir -p build; cd build; make -DHIP_AMD_BACKEND_SOURCE_DIR="$HIPAMD_DIR" -DCMAKE_PREFIX_PATH="/opt/rocm/" ..;make -j${nproc} """ )    
+            
+             }
+ 
            }
             
          println "${env.NODE_NAME}"
