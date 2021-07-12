@@ -52,11 +52,11 @@ def buildhip(slave){
          for (a in agents) {
           if ("${env.NODE_NAME}" == a)  {   
              stage("rocm-dev installation"){
-                def cmd = "sudo rm -rf /var/cache/apt/*"
-                    cmd += "sudo apt-get clean"
-                    cmd += "sudo sh -c 'echo deb [arch=amd64 trusted=yes] http://compute-artifactory.amd.com/artifactory/list/rocm-osdb-deb/ compute-rocm-rel-4.3 34 > /etc/apt/sources.list.d/rocm.list'"
-                    cmd += "sudo apt-get update"
-                    cmd += "sudo apt-get -y install rocm-dkms"
+                def cmd = "sudo rm -rf /var/cache/apt/* ;"
+                    cmd += "sudo apt-get clean ;"
+                    cmd += "sudo sh -c 'echo deb [arch=amd64 trusted=yes] http://compute-artifactory.amd.com/artifactory/list/rocm-osdb-deb/ compute-rocm-rel-4.3 34 > /etc/apt/sources.list.d/rocm.list';"
+                    cmd += "sudo apt-get update;"
+                    cmd += "sudo apt-get -y install rocm-dkms;"
                 def install = sh(returnStdout:true,script:cmd).trim()
             }
          }else {
